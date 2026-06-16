@@ -18,6 +18,7 @@ const produtos = [
     nome: "Pipoca",
     preco: 4.0,
   },
+  
   // segundo produto
   {
     id: 2,
