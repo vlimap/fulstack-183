@@ -12,39 +12,60 @@ const app = express();
 const port = process.env.PORTA;
 
 const produtos = [
-  // primeiro produto
   {
     id: 1,
-    nome: "Pipoca",
-    preco: 4.0,
-  },
-  
-  // segundo produto
-  {
-    id: 2,
     nome: "Coxinha",
-    preco: 5.0,
-  },
+    preco: 4.99
+  }
 ];
 
-// rota raiz da aplicação
-app.get("/", (requisicao, resposta) => {
+// Endpoint responsavel por listar todos os produtos
+app.get("/listar", (requisicao, resposta) => {
+  // tratamento de exceção
   try {
-    resposta.status(200).json(produtos)
+    if (produtos.length === 0) {
+      return resposta.status(200).json({ mensagem: "Nenhum produto cadastrado!" });
+    }
+    resposta.status(200).json(produtos);
   } catch (error) {
-    resposta.status(500).json({mensagem: "Erro ao listar os produtos!"})
+    resposta.status(500).json({ mensagem: "Erro ao listar os produtos!" });
   }
 });
 
-// Mikael
-app.get("/login", (requisicao, resposta) => {
-  resposta.send("Usuário autenticado");
+// Endpoint responsavel por listar um produto por id
+app.get("/listar/:id", (requisicao, resposta) => {
+  try {
+    const id = parseInt(requisicao.params.id)
+    const produto = produtos.find( produto => produto.id === id )
+    if(!produto){
+      return resposta.status(404).json({mensagem: "Produto não encontrado!"})
+    }
+    resposta.status(200).json(produto)
+  } catch (error) {
+    resposta.status(500).json({mensagem: "Erro ao buscar o produto!"})
+  }
 });
 
-// aplicação com rota get, retornando como resposta um hello word
-app.get("/teste", (requisicao, resposta) => {
-  resposta.send("Teste");
+// Endpoint responsavel por cadastrar produtos
+app.post("/cadastrar", (requisicao, resposta) => {
+
 });
+
+// Endpoint responsavel por atualizar todos os dados de um produto
+app.put("/editar", (requisicao, resposta) => {
+
+});
+
+// Endpoint responsavel por excluir todos os produtos
+app.delete("/excluir", (requisicao, resposta) => {
+
+});
+
+// Endpoint responsavel por excluir um produto por id
+app.delete("/excluir", (requisicao, resposta) => {
+
+});
+
 
 // minha aplicação ouvindo a porta 3000
 app.listen(port, () => {
